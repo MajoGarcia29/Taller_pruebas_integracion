@@ -25,7 +25,7 @@ public class RegistryRepository implements RegistryRepositoryPort {
 
     @Override
     public void initSchema() throws Exception {
-        final String ddl = "CREATE TABLE IF NOT EXISTS registry(" +
+        final String ddl = "CREATE TABLE IF NOT EXISTS voters(" +
                 " id INT PRIMARY KEY," +
                 " name VARCHAR(100) NOT NULL," +
                 " age INT NOT NULL," +
@@ -38,7 +38,7 @@ public class RegistryRepository implements RegistryRepositoryPort {
 
     @Override
     public boolean existsById(int id) throws Exception {
-        final String sql = "SELECT 1 FROM registry WHERE id = ?";
+        final String sql = "SELECT 1 FROM voters WHERE id = ?";
         try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -49,7 +49,7 @@ public class RegistryRepository implements RegistryRepositoryPort {
 
     @Override
     public void save(int id, String name, int age, boolean isAlive) throws Exception {
-        final String sql = "INSERT INTO registry(id, name, age, is_alive) VALUES(?, ?, ?, ?)";
+        final String sql = "INSERT INTO voters(id, name, age, is_alive) VALUES(?, ?, ?, ?)";
         try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             boolean prev = con.getAutoCommit();
             con.setAutoCommit(false);
@@ -71,7 +71,7 @@ public class RegistryRepository implements RegistryRepositoryPort {
 
     @Override
     public Optional<RegistryRecord> findById(int id) throws Exception {
-        final String sql = "SELECT id, name, age, is_alive FROM registry WHERE id = ?";
+        final String sql = "SELECT id, name, age, is_alive FROM voters WHERE id = ?";
         try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -89,7 +89,7 @@ public class RegistryRepository implements RegistryRepositoryPort {
     @Override
     public void deleteAll() throws Exception {
         try (Connection con = getConnection(); Statement st = con.createStatement()) {
-            st.executeUpdate("DELETE FROM registry");
+            st.executeUpdate("DELETE FROM voters");
         }
     }
 }
